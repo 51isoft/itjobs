@@ -1,0 +1,28 @@
+{% load staticfiles i18n %}
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+      {% block title %}{% trans "Index page" %}{% endblock %}
+    </title>
+    {% block stylesheets %}
+    <link rel="stylesheet" href="{% static "jobinfos/bootstrap3/css/bootstrap.min.css" %}" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="{% static "jobinfos/css/base.css" %}" type="text/css" />
+    {% endblock %}
+    {% block javascript %}
+    <script src="{% static "jobinfos/js/jquery-1.10.2.min.js" %}" type="text/javascript"></script>
+    <script src="{% static "jobinfos/bootstrap3/js/bootstrap.min.js" %}" type="text/javascript"></script>
+    {% endblock %}
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <div id="main" role="main">
+      <div class="container">
+        {% block content %}
+        {% endblock %}
+      </div>
+    </div>
+  </body>
+</html>
