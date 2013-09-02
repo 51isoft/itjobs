@@ -27,14 +27,14 @@ class Dajie:
       if re.match(r'^/projects/.*\.html$', url):
         print "Processing " + url
         try:
-            job = JobInfo.objects.get(title=link.get_text())
+          job = JobInfo.objects.get(title=link.get_text())
         except JobInfo.DoesNotExist:
-            job = JobInfo()
-            job.title = link.get_text()
-            job.url = "http://s.dajie.com" + url
-            job.pub_date = str(datetime.datetime.now().year) + "-" + link.parent.find_next_sibling().get_text()
-            job.content = self.CrawlDetail(job.url)
-            job.save()
+          job = JobInfo()
+          job.title = link.get_text()
+        job.url = "http://s.dajie.com" + url
+        job.pub_date = str(datetime.datetime.now().year) + "-" + link.parent.find_next_sibling().get_text()
+        job.content = self.CrawlDetail(job.url)
+        job.save()
 
   def CrawlIndexPage(self):
     concerned = [u'电气工程', u'信息工程', u'网络工程', u'电子商务']
@@ -48,14 +48,14 @@ class Dajie:
         if len(set(subjects.get_text().split()).intersection(set(concerned))) > 0:
           print "Processing " + url
           try:
-              job = JobInfo.objects.get(title=link.get_text())
+            job = JobInfo.objects.get(title=link.get_text())
           except JobInfo.DoesNotExist:
-              job = JobInfo()
-              job.title = link.get_text()
-              job.url = "http://s.dajie.com" + url
-              job.pub_date = str(datetime.datetime.now().year) + "-" + link.parent.find_next_sibling().get_text()
-              job.content = self.CrawlDetail(job.url)
-              job.save()
+            job = JobInfo()
+            job.title = link.get_text()
+          job.url = "http://s.dajie.com" + url
+          job.pub_date = str(datetime.datetime.now().year) + "-" + link.parent.find_next_sibling().get_text()
+          job.content = self.CrawlDetail(job.url)
+          job.save()
 
 
 class NewSmth:
@@ -76,17 +76,17 @@ class NewSmth:
 
         print "Processing " + url
         try:
-            job = JobInfo.objects.get(title=link.get_text())
+          job = JobInfo.objects.get(title=link.get_text())
         except JobInfo.DoesNotExist:
-            job = JobInfo()
-            job.title = link.get_text()
-            job.url = "http://www.newsmth.net" + url + "?ajax"
-            if pub_text.find(':') == -1:
-              job.pub_date = pub_text
-            else:
-              job.pub_date = datetime.datetime.now()
-            job.content = self.CrawlDetail(job.url)
-            job.save()
+          job = JobInfo()
+          job.title = link.get_text()
+        job.url = "http://www.newsmth.net" + url + "?ajax"
+        if pub_text.find(':') == -1:
+          job.pub_date = pub_text
+        else:
+          job.pub_date = datetime.datetime.now()
+        job.content = self.CrawlDetail(job.url)
+        job.save()
 
 
 
