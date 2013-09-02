@@ -4,6 +4,6 @@
 {% block content %}
 <h1>{{ job.title }}</h1>
 <p> <a href="{{ job.url }}" target="_blank">{{ job.url }}</a> </p>
-<p> {{ job.content }} </p>
+<p> {{ job.content|safe }} </p>
 {% endblock %}
 
