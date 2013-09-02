@@ -1,0 +1,9 @@
+{% extends "jobinfos/__base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>{{ job.title }}</h1>
+<p> <a href="{{ job.url }}" target="_blank">{{ job.url }}</a> </p>
+<p> {{ job.content }} </p>
+{% endblock %}
+

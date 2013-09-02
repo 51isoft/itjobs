@@ -1,5 +1,23 @@
 {% extends "jobinfos/__base.html" %}
+{% load static %}
 
 {% block content %}
-<h1>Hello World!</h1>
+<h2>近期工作信息</h2>
+<table class="table table-hover table-condensed table-striped">
+  <thead>
+    <tr>
+      <th> 标题 </th>
+      <th> 发布日期 </th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for job in jobs_list %}
+    <tr><td><a href="{% url 'detail' job.id %}">{{ job.title }}</a></td><td>{{ job.pub_date }}</td></tr>
+  {% endfor %}
+  <tbody>
+</table>
+{% endblock %}
+
+{% block extra_head %}
+<script src="{% static "jobinfos/js/index.js" %}" type="text/javascript"></script>
 {% endblock %}

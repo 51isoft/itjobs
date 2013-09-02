@@ -5,5 +5,5 @@ from django.conf.urls import patterns, include, url
 # admin.autodiscover()
 
 urlpatterns = patterns('',
-  url(r'^jobinfos/', include('jobinfos.urls')),
+  url(r'^jobs/', include('jobinfos.urls')),
 )
