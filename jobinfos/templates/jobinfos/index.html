@@ -3,7 +3,13 @@
 
 {% block content %}
 <h2>近期工作信息</h2>
-<table class="table table-hover table-condensed table-striped">
+<div id="filters" class="col-md-12">
+  <div class="btn-group" id="job_type">
+    <button type="button" id="job_all" class="btn btn-default active">全部</button>
+    <button type="button" id="job_nointern" class="btn btn-default">非实习</button>
+  </div>
+</div>
+<table id="jobs" class="table table-hover table-condensed">
   <thead>
     <tr>
       <th> 标题 </th>
