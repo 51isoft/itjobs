@@ -24,29 +24,9 @@ class Dajie:
     html = urllib2.urlopen(url).read()
     soup = BeautifulSoup(html, "lxml")
     for link in soup.find_all("a"):
-      url = str(link.get('href'))
-      if re.match(r'^/projects/.*\.html$', url):
-        print "Processing " + url
-        try:
-          job = JobInfo.objects.get(title=link.get_text())
-        except JobInfo.DoesNotExist:
-          job = JobInfo()
-          job.title = link.get_text()
-        job.url = "http://s.dajie.com" + url
-        job.pub_date = str(datetime.datetime.now().year) + "-" + link.parent.find_next_sibling().get_text()
-        job.content = self.CrawlDetail(job.url)
-        job.save()
-
-  def CrawlIndexPage(self):
-    concerned = [u'电气工程', u'信息工程', u'网络工程', u'电子商务']
-    url = "http://s.dajie.com/2014"
-    html = urllib2.urlopen(url).read()
-    soup = BeautifulSoup(html, "lxml")
-    for link in soup.find("div", class_="item-1").find_all("a"):
-      url = str(link.get('href'))
-      if re.match(r'^/projects/.*\.html$', url):
-        subjects = link.parent.find_next_sibling().find_next_sibling().find_next_sibling()
-        if len(set(subjects.get_text().split()).intersection(set(concerned))) > 0:
+      try:
+        url = str(link.get('href'))
+        if re.match(r'^/projects/.*\.html$', url):
           print "Processing " + url
           try:
             job = JobInfo.objects.get(title=link.get_text())
@@ -57,6 +37,34 @@ class Dajie:
           job.pub_date = str(datetime.datetime.now().year) + "-" + link.parent.find_next_sibling().get_text()
           job.content = self.CrawlDetail(job.url)
           job.save()
+      except Exception, e:
+        print e
+        continue
+
+  def CrawlIndexPage(self):
+    concerned = [u'电气工程', u'信息工程', u'网络工程', u'电子商务']
+    url = "http://s.dajie.com/2014"
+    html = urllib2.urlopen(url).read()
+    soup = BeautifulSoup(html, "lxml")
+    for link in soup.find("div", class_="item-1").find_all("a"):
+      try:
+        url = str(link.get('href'))
+        if re.match(r'^/projects/.*\.html$', url):
+          subjects = link.parent.find_next_sibling().find_next_sibling().find_next_sibling()
+          if len(set(subjects.get_text().split()).intersection(set(concerned))) > 0:
+            print "Processing " + url
+            try:
+              job = JobInfo.objects.get(title=link.get_text())
+            except JobInfo.DoesNotExist:
+              job = JobInfo()
+              job.title = link.get_text()
+            job.url = "http://s.dajie.com" + url
+            job.pub_date = str(datetime.datetime.now().year) + "-" + link.parent.find_next_sibling().get_text()
+            job.content = self.CrawlDetail(job.url)
+            job.save()
+      except Exception, e:
+        print e
+        continue
 
 
 class NewSmth:
@@ -70,24 +78,28 @@ class NewSmth:
     html = urllib2.urlopen(url).read().decode('GBK')
     soup = BeautifulSoup(html, "lxml")
     for row in soup.find('table').find('tbody').find_all('tr'):
-      if row.get('class') is None:
-        link = row.find_all('a')[1]
-        url = str(link.get('href'))
-        pub_text = row.find_all('td')[2].get_text()
+      try:
+        if row.get('class') is None:
+          link = row.find_all('a')[1]
+          url = str(link.get('href'))
+          pub_text = row.find_all('td')[2].get_text()
 
-        print "Processing " + url
-        try:
-          job = JobInfo.objects.get(title=link.get_text())
-        except JobInfo.DoesNotExist:
-          job = JobInfo()
-          job.title = link.get_text()
-        job.url = "http://www.newsmth.net" + url + "?ajax"
-        if pub_text.find(':') == -1:
-          job.pub_date = pub_text
-        else:
-          job.pub_date = datetime.datetime.now()
-        job.content = self.CrawlDetail(job.url)
-        job.save()
+          print "Processing " + url
+          try:
+            job = JobInfo.objects.get(title=link.get_text())
+          except JobInfo.DoesNotExist:
+            job = JobInfo()
+            job.title = link.get_text()
+          job.url = "http://www.newsmth.net" + url + "?ajax"
+          if pub_text.find(':') == -1:
+            job.pub_date = pub_text
+          else:
+            job.pub_date = datetime.datetime.now()
+          job.content = self.CrawlDetail(job.url)
+          job.save()
+      except Exception, e:
+        print e
+        continue
 
 
 class CareerBNU:
@@ -109,20 +121,24 @@ class CareerBNU:
 
     soup = BeautifulSoup(html, "lxml")
     for row in soup.find('dl', class_='ji120101').find_all('dd'):
-      link = row.find_all('a')[0]
-      url = str(link.get('href'))
-      pub_text = row.find_all('td')[1].get_text().strip()
-
-      print "Processing " + url
       try:
-        job = JobInfo.objects.get(title=link.get_text())
-      except JobInfo.DoesNotExist:
-        job = JobInfo()
-        job.title = link.get_text()
-      job.url = "http://career.bnu.edu.cn/" + url
-      job.pub_date = pub_text
-      job.content = self.CrawlDetail(job.url)
-      job.save()
+        link = row.find_all('a')[0]
+        url = str(link.get('href'))
+        pub_text = row.find_all('td')[1].get_text().strip()
+
+        print "Processing " + url
+        try:
+          job = JobInfo.objects.get(title=link.get_text())
+        except JobInfo.DoesNotExist:
+          job = JobInfo()
+          job.title = link.get_text()
+        job.url = "http://career.bnu.edu.cn/" + url
+        job.pub_date = pub_text
+        job.content = self.CrawlDetail(job.url)
+        job.save()
+      except Exception, e:
+        print e
+        continue
 
 
 class Command(BaseCommand):
