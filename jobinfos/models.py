@@ -5,4 +5,6 @@ class JobInfo(models.Model):
   content = models.TextField()
   pub_date = models.DateField()
   url = models.CharField(max_length = 1024)
+  source = models.CharField(max_length = 1024)
+
 # Create your models here.

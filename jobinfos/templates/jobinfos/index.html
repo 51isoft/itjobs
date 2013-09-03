@@ -8,11 +8,12 @@
     <tr>
       <th> 标题 </th>
       <th> 发布日期 </th>
+      <th> 来源 </th>
     </tr>
   </thead>
   <tbody>
   {% for job in jobs_list %}
-    <tr><td><a href="{% url 'detail' job.id %}">{{ job.title }}</a></td><td>{{ job.pub_date }}</td></tr>
+    <tr><td><a href="{% url 'detail' job.id %}">{{ job.title }}</a></td><td>{{ job.pub_date|date:"Y-m-d" }}</td><td>{{ job.source }}</td></tr>
   {% endfor %}
   <tbody>
 </table>

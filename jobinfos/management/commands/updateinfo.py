@@ -167,3 +167,7 @@ class Command(BaseCommand):
       dajie.CrawlJobs(1)
       smth.CrawlJobs(1)
       bnu.CrawlJobs(1)
+
+    JobInfo.objects.filter(url__startswith='http://www.newsmth').update(source=u'水木清华BBS')
+    JobInfo.objects.filter(url__startswith='http://s.dajie').update(source=u'大街网')
+    JobInfo.objects.filter(url__startswith='http://career.bnu').update(source=u'北师就业中心')
