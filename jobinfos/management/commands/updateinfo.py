@@ -1,6 +1,7 @@
 # coding=UTF-8
 
 import datetime
+import urllib
 import urllib2
 import re
 
@@ -89,6 +90,40 @@ class NewSmth:
         job.save()
 
 
+class CareerBNU:
+  def CrawlDetail(self, url):
+    html = urllib2.urlopen(url).read()
+    soup = BeautifulSoup(html)
+    return str(soup.find("dl").find("dd"))
+
+  def CrawlJobs(self, page):
+    url = "http://career.bnu.edu.cn/JobInfomation.aspx?catid=470"
+    data = {}
+    values = {'__EVENTTARGET' : 'AspNetPager1',
+          '__EVENTARGUMENT' : str(page) }
+
+    data = urllib.urlencode(values)
+    req = urllib2.Request(url, data)
+    response = urllib2.urlopen(req)
+    html = response.read()
+
+    soup = BeautifulSoup(html, "lxml")
+    for row in soup.find('dl', class_='ji120101').find_all('dd'):
+      link = row.find_all('a')[0]
+      url = str(link.get('href'))
+      pub_text = row.find_all('td')[1].get_text().strip()
+
+      print "Processing " + url
+      try:
+        job = JobInfo.objects.get(title=link.get_text())
+      except JobInfo.DoesNotExist:
+        job = JobInfo()
+        job.title = link.get_text()
+      job.url = "http://career.bnu.edu.cn/" + url
+      job.pub_date = pub_text
+      job.content = self.CrawlDetail(job.url)
+      job.save()
+
 
 class Command(BaseCommand):
   args = ''
@@ -104,12 +139,15 @@ class Command(BaseCommand):
   def handle(self, *args, **options):
     smth = NewSmth()
     dajie = Dajie()
+    bnu = CareerBNU()
     if options['init']:
       dajie.CrawlIndexPage()
       for i in range(1,10):
         dajie.CrawlJobs(i)
         smth.CrawlJobs(i)
+        bnu.CrawlJobs(i)
     else:
       dajie.CrawlIndexPage()
       dajie.CrawlJobs(1)
       smth.CrawlJobs(1)
+      bnu.CrawlJobs(1)
