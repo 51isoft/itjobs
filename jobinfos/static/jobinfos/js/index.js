@@ -4,7 +4,7 @@ jQuery(function($) {
   function update_table() {
     $("#jobs tbody tr").each(function() {
       $(this).show();
-      if (job_type == 1 && $("td:first", this).text().match(/实习|intern/)) $(this).hide();
+      if (job_type == 1 && $("td:first", this).text().match(/实习|intern/i)) $(this).hide();
     })
   }
   $("#job_type button").click(function(){
