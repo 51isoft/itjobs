@@ -1,13 +1,21 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import Http404
+from django.core.paginator import Paginator
 
 from jobinfos.models import JobInfo
 from jobinfos.models import ExpInfo
 
-def index(request):
+def index(request, page = 1):
+  per_page = 50
+  page = int(page)
+  jobs_list = JobInfo.objects.order_by('-pub_date', '-id')[(page - 1)*per_page:page*per_page]
+  p = Paginator(JobInfo.objects.all(), per_page)
+  return render(request, 'jobinfos/index.html', { 'jobs_list': jobs_list, 'paginator': p.page(page) })
+
+def joblist(request):
   jobs_list = JobInfo.objects.order_by('-pub_date', '-id')
-  return render(request, 'jobinfos/index.html', { 'jobs_list': jobs_list })
+  return render(request, 'jobinfos/all.html', { 'jobs_list': jobs_list })
 
 def detail(request, job_id):
   try:

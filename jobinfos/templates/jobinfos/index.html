@@ -1,19 +1,9 @@
 {% extends "jobinfos/__base.html" %}
 {% load static %}
-
 {% block content %}
 <h2>近期工作信息</h2>
 <div id="filters" class="col-md-12">
-  <div class="btn-group" id="job_type">
-    <button type="button" id="job_all" class="btn btn-default active">全部</button>
-    <button type="button" id="job_nointern" class="btn btn-default">非实习</button>
-  </div>
-  <div class="btn-group" id="job_source">
-    <button type="button" id="job_alls" class="btn btn-default active">全部</button>
-    <button type="button" id="job_smth" class="btn btn-default">水木清华</button>
-    <button type="button" id="job_bnu" class="btn btn-default">北师就业中心</button>
-    <button type="button" id="job_dajie" class="btn btn-default">大街网</button>
-  </div>
+  <a href="{% url 'joblist' %}" class='btn btn-primary'>查看全部</a>
 </div>
 <table id="jobs" class="table table-hover table-condensed">
   <thead>
@@ -29,6 +19,15 @@
   {% endfor %}
   <tbody>
 </table>
+<ul class="pager">
+  {% if paginator.has_previous %}
+    <li class="previous"><a href="{% url 'index_page' paginator.previous_page_number %}">&larr; 上一页</a></li>
+  {% endif %}
+    <li>第 {{paginator.number}} 页， 共 {{paginator.paginator.num_pages}} 页</li>
+  {% if paginator.has_next %}
+    <li class="next"><a href="{% url 'index_page' paginator.next_page_number %}">下一页 &rarr;</a></li>
+  {% endif %}
+</ul>
 {% endblock %}
 
 {% block extra_head %}
