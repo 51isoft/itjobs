@@ -140,7 +140,6 @@ class CareerBNU:
         print e
         continue
 
-
 class Command(BaseCommand):
   args = ''
   help = 'Update Job Infos'

@@ -7,4 +7,9 @@ class JobInfo(models.Model):
   url = models.CharField(max_length = 1024)
   source = models.CharField(max_length = 1024)
 
-# Create your models here.
+class ExpInfo(models.Model):
+  title = models.CharField(max_length = 2048)
+  content = models.TextField()
+  pub_date = models.DateField()
+  url = models.CharField(max_length = 1024)
+  source = models.CharField(max_length = 1024)

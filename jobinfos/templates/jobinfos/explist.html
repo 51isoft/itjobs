@@ -1,0 +1,23 @@
+{% extends "jobinfos/__base.html" %}
+{% load static %}
+
+{% block content %}
+<h2>面试经验聚合</h2>
+<table id="jobs" class="table table-hover table-condensed">
+  <thead>
+    <tr>
+      <th> 标题 </th>
+      <th> 发布日期 </th>
+      <th> 来源 </th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for exp in exps_list %}
+    <tr><td><a href="{% url 'expdetail' exp.id %}">{{ exp.title }}</a></td><td>{{ exp.pub_date|date:"Y-m-d" }}</td><td>{{ exp.source }}</td></tr>
+  {% endfor %}
+  <tbody>
+</table>
+<script>
+$(".navbar #explist").addClass("active");
+</script>
+{% endblock %}

@@ -1,4 +1,5 @@
 {% extends "jobinfos/__base.html" %}
+{% extends "jobinfos/__base.html" %}
 {% load static %}
 
 {% block content %}
@@ -6,7 +7,7 @@
 <p> <a href="{{ job.url }}" target="_blank">{{ job.url }}</a> </p>
 <p> {{ job.content|safe }} </p>
 <script>
-$(".navbar #index").addClass("active");
+$(".navbar #explist").addClass("active");
 </script>
 {% endblock %}
 
